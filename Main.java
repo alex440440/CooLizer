@@ -43,8 +43,12 @@ public class Main {
         user1.setImage("path/to/image");
 
         AccountDetails accountDetails = new AccountDetails();
-        accountDetails.setAccountNumber(15);
+        accountDetails.setAccountNumber(42);
+        accountDetails.setAccountCredentials("test-credentials");
+
         user1.setAccountDetails(accountDetails);
+
+
 
         serializeUser(gson, user1);
     }
@@ -71,7 +75,7 @@ public class Main {
                 "  \"id\": 1,\n" +
                 "  \"image\": \"path/to/image\",\n" +
                 "  \"accountDetails\": {\n" +
-                "    \"accountNumber\": 15\n" +
+                "    \"accountNumber\": 42\n" +
                 "  }\n" +
                 "}";
         deserializeUser(s);

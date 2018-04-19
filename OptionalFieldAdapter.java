@@ -47,8 +47,6 @@ public class OptionalFieldAdapter<E> extends TypeAdapter<OptionalField<E>> {
                 out.nullValue();
             }
         } else {
-//            JsonElement tree = adapter.toJsonTree(value.getValue());
-//            elementAdapter.write(out, tree);
             adapter.write(out, value.getValue());
 
         }
