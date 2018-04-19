@@ -23,6 +23,7 @@ public class Main {
         User user1 = new User();
         user1.setId(1);
         user1.setImage(null);
+        user1.setAccountDetails(null);
 
         serializeUser(gson, user1);
     }
@@ -31,6 +32,7 @@ public class Main {
         User user1 = new User();
         user1.setId(1);
         user1.removeImage();
+        user1.removeAccountDetails();
 
         serializeUser(gson, user1);
     }
@@ -40,13 +42,18 @@ public class Main {
         user1.setId(1);
         user1.setImage("path/to/image");
 
+        AccountDetails accountDetails = new AccountDetails();
+        accountDetails.setAccountNumber(15);
+        user1.setAccountDetails(accountDetails);
+
         serializeUser(gson, user1);
     }
 
     private static void testDeserializeWithNull(){
         String s = "{\n" +
                 "  \"id\": 1,\n" +
-                "  \"image\": null\n" +
+                "  \"image\": null,\n" +
+                "  \"accountDetails\": null\n" +
                 "}";
         deserializeUser(s);
     }
@@ -62,7 +69,10 @@ public class Main {
     private static void testDeserializeWithValue(){
         String s = "{\n" +
                 "  \"id\": 1,\n" +
-                "  \"image\": \"path/to/image\"\n" +
+                "  \"image\": \"path/to/image\",\n" +
+                "  \"accountDetails\": {\n" +
+                "    \"accountNumber\": 15\n" +
+                "  }\n" +
                 "}";
         deserializeUser(s);
     }
@@ -79,13 +89,21 @@ public class Main {
         }else{
             System.out.println("image is: "+user.getImage());
         }
+
+        if (user.getAccountDetails()==null){
+            System.out.println("account is null");
+        }else{
+            System.out.println("account is: "+user.getAccountDetails().getAccountNumber());
+        }
+
         return user;
     }
 
     private static Gson createGson() {
         final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeHierarchyAdapter(OptionalField.class, new GsonOptionalFieldAdapter());
+        gsonBuilder.registerTypeAdapterFactory(OptionalFieldAdapter.FACTORY);
         gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        gsonBuilder.setLenient();
         gsonBuilder.setPrettyPrinting();
 
         final Gson gson = gsonBuilder.create();
